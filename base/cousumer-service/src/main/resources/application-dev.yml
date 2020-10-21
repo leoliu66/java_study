@@ -1,0 +1,60 @@
+info:
+  app:
+    name: Consumer Service
+    description: Leo消费者服务
+
+##日志
+logging:
+  level:
+    com:
+      leo:
+        cousumer:
+          mapper: debug
+
+spring:
+  application:
+    name: consumer
+  security:
+    user:
+      name: root
+      password: root
+  rabbitmq:
+    host: 10.200.23.67
+    port: 5672
+    username: admin
+    password: admin
+    #publisher-confirms: true   #消息发送到交换机确认机制,是否确认回调
+    publisher-confirm-type: correlated #消息发送到交换机确认机制,是否确认回调
+    listener:
+      simple:
+        acknowledge-mode: manual #ACK手动确认
+  datasource:
+    url: jdbc:mysql://localhost:3306/leo?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.leo.**.entity
+  configuration:
+    #开启驼峰功能
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #关键部分。用来显示sql
+
+server:
+  #servlet:
+    #  定义项目的访问访问路径
+    #context-path: /
+    #定义端口号
+  port: 7001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7070/eureka
+
+
