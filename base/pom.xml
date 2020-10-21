@@ -5,6 +5,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>product-remote-api</module>
+        <module>product-service</module>
+        <module>leo-eureka</module>
+        <module>cousumer-service</module>
+        <module>cousumer-remote-api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
