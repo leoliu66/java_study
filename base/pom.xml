@@ -7,6 +7,7 @@
         <module>product-remote-api</module>
         <module>product-service</module>
         <module>leo-eureka</module>
+        <module>leo-zipkin</module>
         <module>cousumer-service</module>
         <module>cousumer-remote-api</module>
     </modules>
