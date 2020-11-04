@@ -28,16 +28,16 @@ public class ConsumerController {
     @LeoLog
     public String getConsumer(){
         log.info("进入getConsumer方法");
-        String[] ss = SpringUtil.getApplicationContext().getBeanDefinitionNames();
+        /*String[] ss = SpringUtil.getApplicationContext().getBeanDefinitionNames();
         for(String s : ss){
             System.out.println(s);
-        }
+        }*/
         System.out.println("进消费端方法");
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(123L);
         productDTO.setNickName("666");
         String str =  productRemoteService.getProduct(productDTO);
-        return "liulu";
+        return str;
 
     }
 

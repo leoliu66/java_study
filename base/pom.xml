@@ -172,6 +172,12 @@
             <version>RELEASE</version>
         </dependency>
 
+        <!-- 添加对zipkin的依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

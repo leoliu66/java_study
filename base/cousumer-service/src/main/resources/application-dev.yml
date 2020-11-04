@@ -3,13 +3,12 @@ info:
     name: Consumer Service
     description: Leo消费者服务
 
-##日志
-logging:
-  level:
-    com:
-      leo:
-        cousumer:
-          mapper: debug
+server:
+  #servlet:
+  #  定义项目的访问访问路径
+  #context-path: /
+  #定义端口号
+  port: 7001
 
 spring:
   application:
@@ -34,6 +33,11 @@ spring:
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
+  zipkin:
+    base-url: http://localhost:9999
+    sleuth:
+      sampler:
+        percentage: 1.0
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
@@ -44,13 +48,6 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #关键部分。用来显示sql
-
-server:
-  #servlet:
-    #  定义项目的访问访问路径
-    #context-path: /
-    #定义端口号
-  port: 7001
 
 eureka:
   client:

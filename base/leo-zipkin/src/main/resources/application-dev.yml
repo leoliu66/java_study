@@ -1,0 +1,17 @@
+info:
+  app:
+    name: Zipkin Service
+    description: LeoZipkin服务
+
+server:
+  port: 9999
+
+spring:
+  application:
+    name: zipkin-server
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7070/eureka
+

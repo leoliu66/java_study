@@ -2,9 +2,16 @@ info:
   app:
     name: Product Service
     description: Leo产品服务
+
 spring:
   application:
     name: product
+  zipkin:
+    base-url: http://localhost:9999
+    sleuth:
+      sampler:
+        percentage: 1.0
+
 
 server:
   port: 7002
