@@ -28,19 +28,14 @@ spring:
       simple:
         acknowledge-mode: manual #ACK手动确认
   datasource:
-    url: jdbc:mysql://localhost:3306/leo?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     driverClassName: com.mysql.jdbc.Driver
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
-  zipkin:
-    base-url: http://localhost:9999
-    sleuth:
-      sampler:
-        percentage: 1.0
 
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/**.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.leo.**.entity
   configuration:

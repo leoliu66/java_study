@@ -31,10 +31,10 @@ public class SpringUtil implements ApplicationContextAware, InitializingBean {
                 "获取applicationContext对象,applicationContext="
                 +SpringUtil.applicationContext+"========");
 
-        String[] names = applicationContext.getBeanDefinitionNames();
+        /*String[] names = applicationContext.getBeanDefinitionNames();
         for(String s : names){
             System.out.println("bean:" + s);
-        }
+        }*/
     }
 
     //获取applicationContext

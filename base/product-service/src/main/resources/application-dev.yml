@@ -6,17 +6,28 @@ info:
 spring:
   application:
     name: product
-  zipkin:
-    base-url: http://localhost:9999
-    sleuth:
-      sampler:
-        percentage: 1.0
-
+  datasource:
+    url: jdbc:mysql://localhost:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
 
 server:
   port: 7002
   #servlet:
     #context-path: /
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.leo.**.entity
+  configuration:
+    #开启驼峰功能
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #关键部分。用来显示sql
+
 eureka:
   client:
     service-url:

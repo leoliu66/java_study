@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leo.cousumer.mapper.CheckOrderMapper">
+    <select id="queryMigrateTableList" resultType="com.leo.cousumer.entity.BfsSensitiveDataMigrate">
+		SELECT
+		id,`TABLE_NAME` as tableName ,
+		instance_name as instanceName,
+		migrate_field as migrateField,
+		migrate_field_type as migrateFieldType,
+		primary_key as primaryKey,
+		migrate_status as migrateStatus
+		FROM ${tableName}
+	</select>
+
+	<select id="queryTableSum" resultType="java.lang.Long">
+		SELECT
+		count(*)
+		FROM ${tableName}
+	</select>
+
+	<select id="queryTableSumByBvn" resultType="java.lang.Long">
+		SELECT
+		count(*)
+		FROM ${tableName}
+		where ${bvn} like "bvn%"
+	</select>
+</mapper>
