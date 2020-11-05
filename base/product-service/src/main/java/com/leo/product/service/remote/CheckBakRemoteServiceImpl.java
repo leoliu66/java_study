@@ -14,17 +14,9 @@ import org.springframework.web.bind.annotation.*;
  * @author LIULU_LEO
  * Date 2020/5/28
  */
-@RestController
-@RequestMapping("/remote/v1/leo-product/products")
+/*@RestController
+@RequestMapping("/remote/v1/leo-product/products")*/
 public class CheckBakRemoteServiceImpl implements CheckBakRemoteService {
 
-    @Autowired
-    private CheckOrderMapper checkOrderMapper;
 
-    @Override
-    @GetMapping("/queryTableSum")
-    public Long queryTableSum(String tableName) {
-        Long tableNameBakSum = checkOrderMapper.queryTableSum(tableName);
-        return tableNameBakSum;
-    }
 }

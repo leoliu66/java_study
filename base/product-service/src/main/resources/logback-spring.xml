@@ -29,6 +29,11 @@
         </triggeringPolicy>
 
     </appender>
+    <logger name="org.apache" level="INFO"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="io.lettuce" level="ERROR"/>
+    <logger name="io.netty" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
     <!-- 日志输出级别 -->
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>

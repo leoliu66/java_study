@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @EnableEurekaClient
-@EnableFeignClients
+@EnableFeignClients(basePackages= {"com.leo"})
 @MapperScan("com.leo.cousumer.mapper")
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
 /*@EnableAspectJAutoProxy(proxyTargetClass = true)*/

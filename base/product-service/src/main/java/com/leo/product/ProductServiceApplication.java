@@ -17,8 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 //不同点：@EnableEurekaClient只适用于Eureka作为注册中心，而@EnableDiscoveryClient可以是其他注册中心；
 @EnableEurekaClient
 //表示开启Fegin客户端
-@EnableFeignClients(basePackages= {"com.leo.product"})
-@PropertySource(value = {"classpath:/wish.properties"})
+@EnableFeignClients(basePackages= {"com.leo"})
+@PropertySource(value = {"classpath:/check.properties"})
 @MapperScan("com.leo.product.mapper")
 public class ProductServiceApplication {
 

@@ -3,6 +3,7 @@ package com.leo.product.service.remote;
 import com.leo.cousumer.dto.AuthorDTO;
 import com.leo.product.controller.ProductController;
 import com.leo.product.dto.ProductDTO;
+import com.leo.product.mapper.CheckOrderMapper;
 import com.leo.product.remoteapi.ProductRemoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +27,15 @@ public class ProductRemoteServiceImpl implements ProductRemoteService {
         System.out.println("远程调用成功===>"+productDTO);
 
         return productController.getProduct();
+    }
+
+    @Autowired
+    private CheckOrderMapper checkOrderMapper;
+
+    @Override
+    @PostMapping("/queryTableSum")
+    public Long queryTableSum(@RequestBody String tableName) {
+        Long tableNameBakSum = checkOrderMapper.queryTableSum(tableName);
+        return tableNameBakSum;
     }
 }

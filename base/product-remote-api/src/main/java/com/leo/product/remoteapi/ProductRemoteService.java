@@ -2,10 +2,8 @@ package com.leo.product.remoteapi;
 
 import com.leo.product.dto.ProductDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 生产者远程调用
@@ -20,4 +18,7 @@ public interface ProductRemoteService {
 
     @PostMapping("/get")
     String getProduct(@RequestBody ProductDTO productDTO);
+
+    @PostMapping("/queryTableSum")
+    Long queryTableSum(@RequestBody String tableName);
 }
