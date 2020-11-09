@@ -10,12 +10,12 @@ spring:
     #url: jdbc:mysql://localhost:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     #username: root
     #password: root
-    #url: jdbc:mysql://easybuycore-test.c5mhjt483svq.us-west-2.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    #username: prodeasybuycore
-    #password: prodeasybuycore!!##!!$$
-    url: jdbc:mysql://easybuycore-reader-1.cluster-custom-c0v0yilplr53.eu-west-1.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: user-ro
-    password: prodeasybuycore-ro!!!!
+    url: jdbc:mysql://easybuycore-test.c5mhjt483svq.us-west-2.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: prodeasybuycore
+    password: prodeasybuycore!!##!!$$
+    #url: jdbc:mysql://easybuycore-reader-1.cluster-custom-c0v0yilplr53.eu-west-1.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    #username: user-ro
+    #password: prodeasybuycore-ro!!!!
     driverClassName: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 server:

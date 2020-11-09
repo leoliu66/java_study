@@ -61,12 +61,12 @@ public class CheckTable {
             List<BfsSensitiveDataMigrate> list = checkOrderMapper.queryMigrateTableList("bfs_sensitive_data_migrate_" + table);
             allTable.addAll(list);
         }
-        //需要比较的表字段
+        /*//需要比较的表字段
         Map<String, String> checkTableBvnFieldMap = new HashMap<>();
         log.info("需要比较的表字段:{}", checkTableBvnFieldMap);
         for (String tableAndField : checkTableBvnField.split(",")) {
             checkTableBvnFieldMap.put(tableAndField.split(":")[0], tableAndField.split(":")[1]);
-        }
+        }*/
 
         if (CollectionUtils.isNotEmpty(allTable)) {
             log.info("需要比较的表：{}", allTable);
@@ -93,7 +93,7 @@ public class CheckTable {
                             }
 
                             if(!StringUtils.equals(checkBvn, "no")) {
-                                for (String table : checkTableBvnFieldMap.keySet()) {
+                                /*for (String table : checkTableBvnFieldMap.keySet()) {
                                     if (StringUtils.equals(table, tableName)) {
                                         Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
                                         if (tableNameSumByBvn.longValue() != tableNameMigrateSum.longValue()) {
@@ -105,6 +105,45 @@ public class CheckTable {
                                             log.info("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
                                                     table, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
                                         }
+                                    }
+                                }*/
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("cust_id")){
+                                    log.info("表：{}以cust_id维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "cust_id");
+                                    if (tableNameSumByBvn.longValue() != tableNameMigrateSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与Migrate库: " + tableNameMigrate + " 数量： " + tableNameMigrateSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                    }
+                                }
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("bvn")){
+                                    log.info("表：{}以bvn维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "bvn");
+                                    if (tableNameSumByBvn.longValue() != tableNameMigrateSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与Migrate库: " + tableNameMigrate + " 数量： " + tableNameMigrateSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                    }
+                                }
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("AUTHENTICATION_IDENTITY")){
+                                    log.info("表：{}以AUTHENTICATION_IDENTITY维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "AUTHENTICATION_IDENTITY");
+                                    if (tableNameSumByBvn.longValue() != tableNameMigrateSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与Migrate库: " + tableNameMigrate + " 数量： " + tableNameMigrateSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
                                     }
                                 }
                             }
@@ -125,7 +164,7 @@ public class CheckTable {
                     exec.shutdown();
                 }
             }
-            log.info("CheckTable-checkMigrate完成，对比表数量：{}，对比字段数量：{}",allTable.size(), checkTableBvnFieldMap.size());
+            log.info("CheckTable-checkMigrate完成，对比表数量：{}",allTable.size());
         }
 
         return resp;
@@ -144,12 +183,12 @@ public class CheckTable {
             List<BfsSensitiveDataMigrate> list = checkOrderMapper.queryMigrateTableList("bfs_sensitive_data_migrate_" + table);
             allTable.addAll(list);
         }
-        //需要比较的表字段
+        /*//需要比较的表字段
         Map<String, String> checkTableBvnFieldMap = new HashMap<>();
         for (String tableAndField : checkTableBvnField.split(",")) {
             checkTableBvnFieldMap.put(tableAndField.split(":")[0], tableAndField.split(":")[1]);
         }
-        log.info("需要比较的表字段:{}", checkTableBvnFieldMap);
+        log.info("需要比较的表字段:{}", checkTableBvnFieldMap);*/
 
         if (CollectionUtils.isNotEmpty(allTable)) {
             log.info("需要比较的表：{}", allTable);
@@ -175,7 +214,7 @@ public class CheckTable {
                             }
 
                             if(!StringUtils.equals(checkBvn, "no")) {
-                                for (String table : checkTableBvnFieldMap.keySet()) {
+                                /*for (String table : checkTableBvnFieldMap.keySet()) {
                                     if (StringUtils.equals(table, tableName)) {
                                         Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
                                         if (tableNameSumByBvn.longValue() != tableNameBakSum.longValue()) {
@@ -187,6 +226,45 @@ public class CheckTable {
                                             log.info("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 一致",
                                                     table, tableNameSumByBvn, table, tableNameBakSum);
                                         }
+                                    }
+                                }*/
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("cust_id")){
+                                    log.info("表：{}以cust_id维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "cust_id");
+                                    if (tableNameSumByBvn.longValue() != tableNameBakSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与BAK库: " + tableName + " 数量： " + tableNameBakSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
+                                    }
+                                }
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("bvn")){
+                                    log.info("表：{}以bvn维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "bvn");
+                                    if (tableNameSumByBvn.longValue() != tableNameBakSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与BAK库: " + tableName + " 数量： " + tableNameBakSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
+                                    }
+                                }
+                                if(bfsSensitiveDataMigrate.getMigrateField().contains("AUTHENTICATION_IDENTITY")){
+                                    log.info("表：{}以AUTHENTICATION_IDENTITY维度统计条数",bfsSensitiveDataMigrate.getTableName());
+                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(tableName, "AUTHENTICATION_IDENTITY");
+                                    if (tableNameSumByBvn.longValue() != tableNameBakSum.longValue()) {
+                                        log.error("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 不一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
+                                        String msg = "加密库BVN维度统计: " + tableName + " 数量：" + tableNameSumByBvn + " 与BAK库: " + tableName + " 数量： " + tableNameBakSum + " 不一致";
+                                        resp.add(msg);
+                                    } else {
+                                        log.info("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 一致",
+                                                tableName, tableNameSumByBvn, tableName, tableNameBakSum);
                                     }
                                 }
                             }
@@ -207,7 +285,7 @@ public class CheckTable {
                 }
             }
 
-            log.info("CheckTable-checkBak完成，对比表数量：{}，对比字段数量：{}",allTable.size(), checkTableBvnFieldMap.size());
+            log.info("CheckTable-checkBak完成，对比表数量：{}",allTable.size());
         }
         return resp;
     }
