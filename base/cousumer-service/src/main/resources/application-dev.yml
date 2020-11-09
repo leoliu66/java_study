@@ -28,12 +28,17 @@ spring:
       simple:
         acknowledge-mode: manual #ACK手动确认
   datasource:
-    url: jdbc:mysql://localhost:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
-    driverClassName: com.mysql.jdbc.Driver
-    username: root
-    password: root
-    type: com.alibaba.druid.pool.DruidDataSource
-
+      #url: jdbc:mysql://localhost:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+      #username: root
+      #password: root
+      #url: jdbc:mysql://easybuycore-test.c5mhjt483svq.us-west-2.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+      #username: prodeasybuycore
+      #password: prodeasybuycore!!##!!$$
+      url: jdbc:mysql://easybuycore-reader-1.cluster-custom-c0v0yilplr53.eu-west-1.rds.amazonaws.com:3306/easybuy_bfs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+      username: user-ro
+      password: prodeasybuycore-ro!!!!
+      driverClassName: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
 mybatis-plus:
   mapper-locations: classpath:/mapper/**.xml
   #实体扫描，多个package用逗号或者分号分隔
@@ -43,6 +48,11 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #关键部分。用来显示sql
+
+#默认超时时间1s
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 eureka:
   client:

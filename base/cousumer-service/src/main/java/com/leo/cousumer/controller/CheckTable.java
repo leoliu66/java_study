@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -50,10 +51,10 @@ public class CheckTable {
     @GetMapping(value = "/checkMigrate")
     /* 方法注解 */
     @ApiOperation(value = "checkMigrate", notes = "")
-    public List<String> checkMigrate() {
+    public List<String> checkMigrate(@RequestParam(name = "checkBvn")String checkBvn) {
         //线程安全
         List<String> resp = new Vector<>();
-        log.info("CheckTable-checkMigrate");
+            log.info("CheckTable-checkMigrate----checkBvn:{}",checkBvn);
         //需要比较的表
         List<BfsSensitiveDataMigrate> allTable = new ArrayList<>();
         for (String table : migratetable.split(",")) {
@@ -72,7 +73,7 @@ public class CheckTable {
 
             ExecutorService exec = null;
             try {
-                exec = Executors.newFixedThreadPool(10);
+                exec = Executors.newFixedThreadPool(8);
                 final CountDownLatch latch = new CountDownLatch(allTable.size());
                 for (BfsSensitiveDataMigrate bfsSensitiveDataMigrate : allTable) {
                     exec.execute(() -> {
@@ -81,26 +82,29 @@ public class CheckTable {
                             String tableNameMigrate = bfsSensitiveDataMigrate.getInstanceName() + "_migrate." + bfsSensitiveDataMigrate.getTableName();
                             Long tableNameSum = checkOrderMapper.queryTableSum(tableName);
                             Long tableNameMigrateSum = checkOrderMapper.queryTableSum(tableNameMigrate);
-                            if (tableNameSum != tableNameMigrateSum) {
-                                log.error("tableName:{}数量：{}与tableNameMigrate:{}数量：{}不一致",
+                            if (tableNameSum.longValue() != tableNameMigrateSum.longValue()) {
+                                log.error("加密库: {} 数量： {} 与Migrate库: {} 数量： {} 不一致",
                                         tableName, tableNameSum, tableNameMigrate, tableNameMigrateSum);
-                                String msg = "tableName:" + tableName + "数量：" + tableNameSum + "与tableNameMigrate:" + tableNameMigrate + "数量：" + tableNameMigrateSum + "不一致";
+                                String msg = "加密库: " + tableName + " 数量：" + tableNameSum + " 与Migrate库: " + tableNameMigrate + " 数量： " + tableNameMigrateSum + " 不一致";
                                 resp.add(msg);
                             } else {
-                                log.info("tableName:{}数量：{}与tableNameMigrate:{}数量：{}一致",
+                                log.info("加密库: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
                                         tableName, tableNameSum, tableNameMigrate, tableNameMigrateSum);
                             }
-                            for (String table : checkTableBvnFieldMap.keySet()) {
-                                if (StringUtils.equals(table, tableName)) {
-                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
-                                    if (tableNameSumByBvn != tableNameMigrateSum) {
-                                        log.error("tableNameSumByBvn:{}数量：{}与tableNameMigrate:{}数量：{}不一致",
-                                                table, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
-                                        String msg = "tableNameSumByBvn:" + table + "数量：" + tableNameSumByBvn + "与tableNameMigrate:" + tableNameMigrate + "数量：" + tableNameMigrateSum + "不一致";
-                                        resp.add(msg);
-                                    } else {
-                                        log.info("tableNameSumByBvn:{}数量：{}与tableNameMigrate:{}数量：{}一致",
-                                                table, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+
+                            if(!StringUtils.equals(checkBvn, "no")) {
+                                for (String table : checkTableBvnFieldMap.keySet()) {
+                                    if (StringUtils.equals(table, tableName)) {
+                                        Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
+                                        if (tableNameSumByBvn.longValue() != tableNameMigrateSum.longValue()) {
+                                            log.error("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 不一致",
+                                                    table, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                            String msg = "加密库BVN维度统计: " + table + " 数量：" + tableNameSumByBvn + " 与Migrate库: " + tableNameMigrate + " 数量： " + tableNameMigrateSum + " 不一致";
+                                            resp.add(msg);
+                                        } else {
+                                            log.info("加密库BVN维度统计: {} 数量： {} 与Migrate库: {} 数量： {} 一致",
+                                                    table, tableNameSumByBvn, tableNameMigrate, tableNameMigrateSum);
+                                        }
                                     }
                                 }
                             }
@@ -121,6 +125,7 @@ public class CheckTable {
                     exec.shutdown();
                 }
             }
+            log.info("CheckTable-checkMigrate完成，对比表数量：{}，对比字段数量：{}",allTable.size(), checkTableBvnFieldMap.size());
         }
 
         return resp;
@@ -129,10 +134,10 @@ public class CheckTable {
     @GetMapping(value = "/checkBak")
     /* 方法注解 */
     @ApiOperation(value = "checkBak", notes = "")
-    public List<String> checkBak() {
+    public List<String> checkBak(@RequestParam(name = "checkBvn")String checkBvn) {
         //线程安全
         List<String> resp = new Vector<>();
-        log.info("CheckTable-checkBak");
+        log.info("CheckTable-checkBak----checkBvn:{}",checkBvn);
         //需要比较的表
         List<BfsSensitiveDataMigrate> allTable = new ArrayList<>();
         for (String table : migratetable.split(",")) {
@@ -141,16 +146,16 @@ public class CheckTable {
         }
         //需要比较的表字段
         Map<String, String> checkTableBvnFieldMap = new HashMap<>();
-        log.info("需要比较的表字段:{}", checkTableBvnFieldMap);
         for (String tableAndField : checkTableBvnField.split(",")) {
             checkTableBvnFieldMap.put(tableAndField.split(":")[0], tableAndField.split(":")[1]);
         }
+        log.info("需要比较的表字段:{}", checkTableBvnFieldMap);
 
         if (CollectionUtils.isNotEmpty(allTable)) {
             log.info("需要比较的表：{}", allTable);
             ExecutorService exec = null;
             try {
-                exec = Executors.newFixedThreadPool(10);
+                exec = Executors.newFixedThreadPool(8);
                 final CountDownLatch latch = new CountDownLatch(allTable.size());
                 for (BfsSensitiveDataMigrate bfsSensitiveDataMigrate : allTable) {
 
@@ -159,26 +164,29 @@ public class CheckTable {
                             String tableName = bfsSensitiveDataMigrate.getInstanceName() + "." + bfsSensitiveDataMigrate.getTableName();
                             Long tableNameSum = checkOrderMapper.queryTableSum(tableName);
                             Long tableNameBakSum = checkBakRemoteService.queryTableSum(tableName);
-                            if (tableNameSum != tableNameBakSum) {
-                                log.error("tableName:{}数量：{}与tableNameMigrate:{}数量：{}不一致",
-                                        tableName, tableNameSum, "BAK", tableNameBakSum);
-                                String msg = "tableName:" + tableName + "数量：" + tableNameSum + "与tableNameMigrate:" + "BAK" + "数量：" + tableNameBakSum + "不一致";
+                            if (tableNameSum.longValue() != tableNameBakSum.longValue()) {
+                                log.error("加密库: {} 数量： {} 与BAK库: {} 数量： {} 不一致",
+                                        tableName, tableNameSum, tableName, tableNameBakSum);
+                                String msg = "加密库: " + tableName + " 数量：" + tableNameSum + " 与BAK库: " + tableName + " 数量： " + tableNameBakSum + " 不一致";
                                 resp.add(msg);
                             } else {
-                                log.info("tableName:{}数量：{}与tableNameMigrate:{}数量：{}一致",
-                                        tableName, tableNameSum, "BAK", tableNameBakSum);
+                                log.info("加密库: {} 数量： {} 与BAK库: {} 数量： {} 一致",
+                                        tableName, tableNameSum, tableName, tableNameBakSum);
                             }
-                            for (String table : checkTableBvnFieldMap.keySet()) {
-                                if (StringUtils.equals(table, tableName)) {
-                                    Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
-                                    if (tableNameSumByBvn != tableNameBakSum) {
-                                        log.error("tableNameSumByBvn:{}数量：{}与tableNameMigrate:{}数量：{}不一致",
-                                                table, tableNameSumByBvn, "BAK", tableNameBakSum);
-                                        String msg = "tableNameSumByBvn:" + table + "数量：" + tableNameSumByBvn + "与tableNameMigrate:" + "BAK" + "数量：" + tableNameBakSum + "不一致";
-                                        resp.add(msg);
-                                    } else {
-                                        log.info("tableNameSumByBvn:{}数量：{}与tableNameMigrate:{}数量：{}一致",
-                                                table, tableNameSumByBvn, "BAK", tableNameBakSum);
+
+                            if(!StringUtils.equals(checkBvn, "no")) {
+                                for (String table : checkTableBvnFieldMap.keySet()) {
+                                    if (StringUtils.equals(table, tableName)) {
+                                        Long tableNameSumByBvn = checkOrderMapper.queryTableSumByBvn(table, checkTableBvnFieldMap.get(table));
+                                        if (tableNameSumByBvn.longValue() != tableNameBakSum.longValue()) {
+                                            log.error("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 不一致",
+                                                    table, tableNameSumByBvn, table, tableNameBakSum);
+                                            String msg = "加密库BVN维度统计: " + table + " 数量：" + tableNameSumByBvn + " 与BAK库: " + table + " 数量： " + tableNameBakSum + " 不一致";
+                                            resp.add(msg);
+                                        } else {
+                                            log.info("加密库BVN维度统计: {} 数量： {} 与BAK库: {} 数量： {} 一致",
+                                                    table, tableNameSumByBvn, table, tableNameBakSum);
+                                        }
                                     }
                                 }
                             }
@@ -198,6 +206,8 @@ public class CheckTable {
                     exec.shutdown();
                 }
             }
+
+            log.info("CheckTable-checkBak完成，对比表数量：{}，对比字段数量：{}",allTable.size(), checkTableBvnFieldMap.size());
         }
         return resp;
     }
