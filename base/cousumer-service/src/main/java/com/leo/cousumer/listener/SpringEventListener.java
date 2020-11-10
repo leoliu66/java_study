@@ -19,7 +19,7 @@ public class SpringEventListener
         implements ApplicationListener<ApplicationEvent> {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-        if(event instanceof ContextClosedEvent){
+        /*if(event instanceof ContextClosedEvent){
             System.out.println(event.getClass().getSimpleName()+" 事件已发生！");
         }else if(event instanceof ContextRefreshedEvent){
             System.out.println(event.getClass().getSimpleName()+" 事件已发生！");
@@ -29,6 +29,6 @@ public class SpringEventListener
             System.out.println(event.getClass().getSimpleName()+" 事件已发生！");
         }else{
             System.out.println("有其它事件发生:"+event.getClass().getName());
-        }
+        }*/
     }
 }

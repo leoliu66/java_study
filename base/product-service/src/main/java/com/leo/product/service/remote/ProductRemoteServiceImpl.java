@@ -4,6 +4,7 @@ import com.leo.cousumer.dto.AuthorDTO;
 import com.leo.product.controller.ProductController;
 import com.leo.product.dto.ProductDTO;
 import com.leo.product.remoteapi.ProductRemoteService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/remote/v1/leo-product/products")
+@Slf4j
 public class ProductRemoteServiceImpl implements ProductRemoteService {
 
     @Autowired
@@ -23,7 +25,7 @@ public class ProductRemoteServiceImpl implements ProductRemoteService {
     @Override
     @PostMapping("/get")
     public String getProduct(@RequestBody ProductDTO productDTO) {
-        System.out.println("远程调用成功===>"+productDTO);
+        log.info("远程调用成功===>"+productDTO);
 
         return productController.getProduct();
     }

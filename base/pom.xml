@@ -10,6 +10,7 @@
         <module>leo-zipkin</module>
         <module>cousumer-service</module>
         <module>cousumer-remote-api</module>
+        <module>leo-base-common</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -174,6 +175,11 @@
             <artifactId>spring-cloud-starter-zipkin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

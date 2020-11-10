@@ -24,7 +24,7 @@ public class SpringUtil implements ApplicationContextAware, InitializingBean {
             SpringUtil.applicationContext = applicationContext;
         }
 
-        System.out.println("--- me.shijunjie.util.SpringUtil" + "---");
+        /*System.out.println("--- me.shijunjie.util.SpringUtil" + "---");
 
         System.out.println("========ApplicationContext配置成功," +
                 "在普通类可以通过调用SpringUtils.getAppContext()" +
@@ -34,7 +34,7 @@ public class SpringUtil implements ApplicationContextAware, InitializingBean {
         String[] names = applicationContext.getBeanDefinitionNames();
         for(String s : names){
             System.out.println("bean:" + s);
-        }
+        }*/
     }
 
     //获取applicationContext
