@@ -3,6 +3,7 @@ package com.leo.common.dto;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.leo.common.constant.BaseConstants;
+import com.leo.common.exception.BaseExceptionCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
@@ -159,6 +160,12 @@ public class ResponseModel {
         return responeModel;
     }
 
+    public static ResponseModel error(BaseExceptionCode baseExceptionCode) {
+        ResponseModel responeModel = new ResponseModel();
+        responeModel.setCode(baseExceptionCode.getCode());
+        responeModel.setMsg(baseExceptionCode.getMsg());
+        return responeModel;
+    }
 
     /**
      * 将data设置成为map

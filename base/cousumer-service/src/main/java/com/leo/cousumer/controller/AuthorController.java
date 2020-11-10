@@ -32,7 +32,7 @@ public class AuthorController {
     @Transactional
     /* 方法注解 */
     @ApiOperation(value = "新增作者", notes = "")
-    public ResponseModel insert(@RequestBody AuthorDTO authorDTO) {
+    public ResponseModel insert(@RequestBody AuthorDTO authorDTO){
         log.info("AuthorController.insert事务名称："
                 + TransactionSynchronizationManager.getCurrentTransactionName());
         Author user = new Author();
