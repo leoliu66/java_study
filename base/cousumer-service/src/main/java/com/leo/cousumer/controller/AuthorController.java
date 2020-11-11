@@ -7,10 +7,18 @@ import com.leo.cousumer.service.AuthorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * 作者控制器
@@ -39,7 +47,28 @@ public class AuthorController {
         user.setNickName("aaa");
         user.setRealName("bbb");
         boolean save = authorService.save(user);
+
+        MyThread myThread = new MyThread();
+        new Thread(myThread).start();
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
+        for(int i=0; i<100; i++) {
+            fixedThreadPool.execute(() -> {
+                log.info("liulu");
+                log.info(String.valueOf(MDC.getCopyOfContextMap()));
+            });
+        }
         /*authorService.saveAuthor();*/
         return ResponseModel.ok(user);
     }
+
+    static class MyThread implements Runnable {
+        @Override
+        public void run() {
+            log.info("MyThread");
+            Map<String, String> map = MDC.getCopyOfContextMap();
+            log.info(String.valueOf(map));
+        }
+    }
+
 }
