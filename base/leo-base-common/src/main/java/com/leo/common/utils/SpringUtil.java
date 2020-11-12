@@ -1,4 +1,4 @@
-package com.leo.cousumer.util;
+package com.leo.common.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;

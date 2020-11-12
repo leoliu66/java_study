@@ -21,7 +21,7 @@
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
             <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] [%thread] %-5level %logger{50} - %msg%n</pattern>-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] - [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %logger{50} - %highlight(%msg) %n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level)[%thread] [%yellow(%X{X-B3-TraceId}),%green(%X{X-B3-SpanId})] %logger{50} - %highlight(%msg) %n</pattern>
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">

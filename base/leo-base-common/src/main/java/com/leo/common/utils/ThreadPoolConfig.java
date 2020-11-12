@@ -1,8 +1,10 @@
 package com.leo.common.utils;
 
+import brave.Tracing;
 import org.springframework.aop.interceptor.AsyncExecutionAspectSupport;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.SpanNamer;
 import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +22,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Date 2020/11/11
  * @Version 1.0
  */
-@EnableAsync //启用@Async
 @Configuration
-public class ThreadPoolConfig {
+public class ThreadPoolConfig{
+
     @Autowired
     private BeanFactory beanFactory;
 
@@ -40,6 +42,7 @@ public class ThreadPoolConfig {
         //线程名字前缀
         executor.setThreadNamePrefix("taskExecutor-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
         return new LazyTraceExecutor(beanFactory, executor);
     }
 
@@ -55,8 +58,9 @@ public class ThreadPoolConfig {
         //活跃时间
         executor.setKeepAliveSeconds(60);
         //线程名字前缀
-        executor.setThreadNamePrefix("taskExecutor-");
+        executor.setThreadNamePrefix("newTask-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
         return new LazyTraceExecutor(beanFactory, executor);
     }
 }

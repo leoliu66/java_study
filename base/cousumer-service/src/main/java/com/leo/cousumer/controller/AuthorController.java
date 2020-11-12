@@ -1,30 +1,24 @@
 package com.leo.cousumer.controller;
 
 import com.leo.common.dto.ResponseModel;
+import com.leo.common.utils.SpringUtil;
 import com.leo.cousumer.dto.AuthorDTO;
 import com.leo.cousumer.entity.Author;
 import com.leo.cousumer.service.AuthorService;
-import com.leo.cousumer.util.SpringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 作者控制器
@@ -62,6 +56,7 @@ public class AuthorController {
     }
 
     @Async("newTask")
+    @Scheduled
     public void asyncMethod() {
         log.info("Start Async Method");
         log.info(String.valueOf(MDC.getCopyOfContextMap()));
@@ -73,5 +68,4 @@ public class AuthorController {
         }
         log.info("End Async Method");
     }
-
 }

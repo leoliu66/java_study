@@ -1,4 +1,4 @@
-package com.leo.cousumer.util;
+package com.leo.common.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
