@@ -22,4 +22,6 @@ public interface CheckOrderMapper extends BaseMapper<BfsSensitiveDataMigrate>{
     Long queryTableSum(@Param("tableName") String tableName);
 
     Long queryTableSumByBvn(@Param("tableName") String tableName, @Param("bvn") String bvn);
+
+    List<String> queryRand(@Param("tableName") String tableName, @Param("field")String field, @Param("limit")String limit);
 }

@@ -24,4 +24,11 @@
 		FROM ${tableName}
 		where ${bvn} like "bvn%"
 	</select>
+
+	<select id="queryRand" resultType="java.lang.String">
+		SELECT
+		${field}
+		FROM ${tableName}
+		ORDER BY RAND() LIMIT ${limit}
+	</select>
 </mapper>
