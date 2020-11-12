@@ -4,11 +4,16 @@ import com.leo.common.dto.ResponseModel;
 import com.leo.cousumer.dto.AuthorDTO;
 import com.leo.cousumer.entity.Author;
 import com.leo.cousumer.service.AuthorService;
+import com.leo.cousumer.util.SpringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -36,6 +42,9 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
+    @Autowired
+    BeanFactory beanFactory;
+
     @PostMapping
     @Transactional
     /* 方法注解 */
@@ -47,28 +56,22 @@ public class AuthorController {
         user.setNickName("aaa");
         user.setRealName("bbb");
         boolean save = authorService.save(user);
-
-        MyThread myThread = new MyThread();
-        new Thread(myThread).start();
-
-        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
-        for(int i=0; i<100; i++) {
-            fixedThreadPool.execute(() -> {
-                log.info("liulu");
-                log.info(String.valueOf(MDC.getCopyOfContextMap()));
-            });
-        }
+        SpringUtil.getBean(AuthorController.class).asyncMethod();
         /*authorService.saveAuthor();*/
         return ResponseModel.ok(user);
     }
 
-    static class MyThread implements Runnable {
-        @Override
-        public void run() {
-            log.info("MyThread");
-            Map<String, String> map = MDC.getCopyOfContextMap();
-            log.info(String.valueOf(map));
+    @Async("newTask")
+    public void asyncMethod() {
+        log.info("Start Async Method");
+        log.info(String.valueOf(MDC.getCopyOfContextMap()));
+        try {
+
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        log.info("End Async Method");
     }
 
 }

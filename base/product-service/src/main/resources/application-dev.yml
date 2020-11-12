@@ -11,6 +11,8 @@ spring:
     sleuth:
       sampler:
         percentage: 1.0
+    sender:
+      type: web
 
 
 server:

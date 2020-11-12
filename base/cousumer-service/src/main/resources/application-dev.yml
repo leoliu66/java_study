@@ -38,6 +38,8 @@ spring:
     sleuth:
       sampler:
         percentage: 1.0
+    sender:
+      type: web
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
@@ -47,7 +49,7 @@ mybatis-plus:
     #开启驼峰功能
     map-underscore-to-camel-case: true
     cache-enabled: false
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #关键部分。用来显示sql
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #用来显示sql
 
 eureka:
   client:

@@ -36,7 +36,7 @@ public class ConsumerController {
         productDTO.setId(123L);
         productDTO.setNickName("666");
         String str =  productRemoteService.getProduct(productDTO);
-        return ResponseModel.ok(str);
+        return ResponseModel.ok((Object) str);
 
     }
 
